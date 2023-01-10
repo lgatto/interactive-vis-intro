@@ -8,17 +8,12 @@ format:
     code-fold: false
 ---
 
-```{=html}
-<style>
-pre.output-code {
-  background-color: #f8f9fa;
-}
-</style>
-```
 
-This very short introduction to interactive visualisation in R will teach you:
+This very short introduction to interactive visualisation in R will
+teach you:
 
--   How to use `plotly` to create interactive visualisations from a `ggplot2` figure.
+-   How to use `plotly` to create interactive visualisations from a
+    `ggplot2` figure.
 -   How to develop a simple interactive `shiny` application.
 
 More specifically, for the `shiny` application, you will learn about
@@ -28,11 +23,6 @@ communication between them.
 
 ## Interactive plots with `plotly`
 
-The [`plotly`](https://github.com/plotly/plotly.R) package can be used
-for creating interactive web graphics open source JavaScript graphing
-library [plotly.js](https://github.com/plotly/plotly.js) and its R
-[binding](https://plotly.com/r/).
-
 Install the package with
 
 ```{r}
@@ -41,14 +31,29 @@ Install the package with
 install.packages("plotly")
 ```
 
+The [`plotly`](https://github.com/plotly/plotly.R) package can be used
+for creating interactive web graphics open source JavaScript graphing
+library [plotly.js](https://github.com/plotly/plotly.js) and its R
+[binding](https://plotly.com/r/).
+
+Once a `ggplot2` figure is stored in a variable such as `p` below ...
+
 ```{r}
-#| label: plotly
+#| label: ggplot
 #| message: false
+library("ggplot2")
 data(iris)
-library("plotly")
 p <- ggplot(data = iris,
             aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
     geom_point()
+```
+
+... the variable can simply be pass to the `ggploty()` function:
+
+```{r}
+#| label: plotly
+#| message: false
+library("plotly")
 ggplotly(p)
 ```
 
@@ -57,22 +62,18 @@ more details and to learn how to build plotly plots from scratch in R.
 
 ## Interactive apps with `shiny`
 
-For more details about `shiny`, visit the main `shiny`
-[website](https://shiny.rstudio.com/) or consult the [Mastering
-Shiny](https://mastering-shiny.org/) book.
-
-The [`shiny`](https://shiny.rstudio.com/) package desciption says that
-it
-
-> Makes it incredibly easy to build interactive web applications with
-> R.
-
+Install the package with
 
 ```{r}
 #| label: install_shiny
 #| eval: false
 install.packages("shiny")
 ```
+
+Quoting the [`shiny`](https://shiny.rstudio.com/) package desciption:
+
+> Makes it incredibly easy to build interactive web applications with
+> R.
 
 As opposed to `plotly` above, when using
 [`shiny`](https://shiny.rstudio.com/), one tends to aim for more
@@ -126,7 +127,7 @@ The app can also be opened at
 
 1.  Create a directory that will contain the app, such as for example `"shinyapp"`.
 2.  In this directory, create the *ui* and *server* files, named `ui.R` and `server.R`.
-3.  In the `ui.R` file, let's defines a (fluid) page containing
+3.  In the `ui.R` file, let's defines a simple (fluid) page containing
     -   a title panel with a page title;
     -   a layout containing a sidebar and a main panel
 
@@ -135,23 +136,26 @@ The app can also be opened at
 #| file: src/shiny-app00/ui.R
 ```
 
-4.  In the `server.R` file, we define the `shinyServer` function that handles input and ouputs (none at this stage) and the R logic.
+4.  In the `server.R` file, we define the `shinyServer` function that
+    handles the inputs (coming from the ui) and ouputs (returned back
+    to the ui) ... there are none at this stage, and the R logic.
 
 ```{r}
 #| eval: false
 #| file: src/shiny-app00/server.R
 ```
 
-5.  Let's now add some items to the *ui*: a text input widget in the sidebar and a field to hold the text ouput.
+5.  Let's now add some items to the *ui*: a text input widget in the
+    sidebar and a field to hold the text ouput.
 
 ```{r}
 #| eval: false
 #| file: src/shiny-app01/ui.R
 ```
 
-6.  In the `server.R` file, we add in the `shinyServer` function some
-    R code defining how to manipulate the user-provided text and
-    render it using a shiny `textOuput`.
+6.  We can now populate the `shinyServer` function in the `server.R`
+    file. Below, we add some R code defining how to manipulate the
+    user-provided text and render it using a shiny `textOuput`.
 
 ```{r}
 #| eval: false
@@ -180,7 +184,7 @@ The app can also be opened at
 #| file: src/shiny-app03/ui.R
 ```
 
-```{r server03, comment = "", echo=FALSE}
+```{r}
 #| eval: false
 #| file: src/shiny-app03/server.R
 ```
@@ -241,12 +245,18 @@ shinyApp(ui = ui, server = server)
 
 -   Share the code file(s) and `runApp`.
 -   `runUrl` will download and launch a Shiny application that is hosted at a downloadable URL.
--   `runGitHub` to run an application available on GitHub [^1]. 
+-   `runGitHub` to run an application available on GitHub [^1].
 -   [shinyapps](http://wwwshinyapps.io) hosts Shiny application.
 -   Shiny server (in-house)
 
-[^1]: You can for instance run this app with 
+[^1]: You can for instance run this app with
       `runGitHub("interactive-vis-intro", "lgatto", subdir = "/src/shiny-app1")`
+
+
+For more details about `shiny`, visit the main `shiny`
+[website](https://shiny.rstudio.com/) or consult the [Mastering
+Shiny](https://mastering-shiny.org/) book.
+
 
 ## Session information
 
