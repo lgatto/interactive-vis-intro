@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Laurent Gatto">
+
+<title>Short introduction to interactive visualisation in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="interactive_files/libs/clipboard/clipboard.min.js"></script>
+<script src="interactive_files/libs/quarto-html/quarto.js"></script>
+<script src="interactive_files/libs/quarto-html/popper.min.js"></script>
+<script src="interactive_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="interactive_files/libs/quarto-html/anchor.min.js"></script>
+<link href="interactive_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="interactive_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="interactive_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="interactive_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="interactive_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="interactive_files/libs/htmlwidgets-1.6.0/htmlwidgets.js"></script>
+<script src="interactive_files/libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="interactive_files/libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="interactive_files/libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="interactive_files/libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+<script src="interactive_files/libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="interactive_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="interactive_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#interactive-plots-with-plotly" id="toc-interactive-plots-with-plotly" class="nav-link active" data-scroll-target="#interactive-plots-with-plotly">Interactive plots with <code>plotly</code></a></li>
+  <li><a href="#interactive-apps-with-shiny" id="toc-interactive-apps-with-shiny" class="nav-link" data-scroll-target="#interactive-apps-with-shiny">Interactive apps with <code>shiny</code></a></li>
+  <li><a href="#session-information" id="toc-session-information" class="nav-link" data-scroll-target="#session-information">Session information</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Short introduction to interactive visualisation in R</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Laurent Gatto </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<style>
+pre.output-code {
+  background-color: #f8f9fa;
+}
+</style>
+<p>This very short introduction to interactive visualisation in R will teach you:</p>
+<ul>
+<li>How to use <code>plotly</code> to create interactive visualisations from a <code>ggplot2</code> figure.</li>
+<li>How to develop a simple interactive <code>shiny</code> application.</li>
+</ul>
+<p>More specifically, for the <code>shiny</code> application, you will learn about the two components of an application, namely the user interface and server, and how the reactive programming paradigm enables communication between them.</p>
+<section id="interactive-plots-with-plotly" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-plots-with-plotly">Interactive plots with <code>plotly</code></h2>
+<p>The <a href="https://github.com/plotly/plotly.R"><code>plotly</code></a> package can be used for creating interactive web graphics open source JavaScript graphing library <a href="https://github.com/plotly/plotly.js">plotly.js</a> and its R <a href="https://plotly.com/r/">binding</a>.</p>
+<p>Install the package with</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"plotly"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(iris)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"plotly"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> iris,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">colour =</span> Species)) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-c1c7c2299f9ceeb2f37a" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-c1c7c2299f9ceeb2f37a">{"x":{"data":[{"x":[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1,5.4,5.1,4.6,5.1,4.8,5,5,5.2,5.2,4.7,4.8,5.4,5.2,5.5,4.9,5,5.5,4.9,4.4,5.1,5,4.5,4.4,5,5.1,4.8,5.1,4.6,5.3,5],"y":[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3,3,4,4.4,3.9,3.5,3.8,3.8,3.4,3.7,3.6,3.3,3.4,3,3.4,3.5,3.4,3.2,3.1,3.4,4.1,4.2,3.1,3.2,3.5,3.6,3,3.4,3.5,2.3,3.2,3.5,3.8,3,3.8,3.2,3.7,3.3],"text":["Sepal.Length: 5.1<br />Sepal.Width: 3.5<br />Species: setosa","Sepal.Length: 4.9<br />Sepal.Width: 3.0<br />Species: setosa","Sepal.Length: 4.7<br />Sepal.Width: 3.2<br />Species: setosa","Sepal.Length: 4.6<br />Sepal.Width: 3.1<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.6<br />Species: setosa","Sepal.Length: 5.4<br />Sepal.Width: 3.9<br />Species: setosa","Sepal.Length: 4.6<br />Sepal.Width: 3.4<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.4<br />Species: setosa","Sepal.Length: 4.4<br />Sepal.Width: 2.9<br />Species: setosa","Sepal.Length: 4.9<br />Sepal.Width: 3.1<br />Species: setosa","Sepal.Length: 5.4<br />Sepal.Width: 3.7<br />Species: setosa","Sepal.Length: 4.8<br />Sepal.Width: 3.4<br />Species: setosa","Sepal.Length: 4.8<br />Sepal.Width: 3.0<br />Species: setosa","Sepal.Length: 4.3<br />Sepal.Width: 3.0<br />Species: setosa","Sepal.Length: 5.8<br />Sepal.Width: 4.0<br />Species: setosa","Sepal.Length: 5.7<br />Sepal.Width: 4.4<br />Species: setosa","Sepal.Length: 5.4<br />Sepal.Width: 3.9<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.5<br />Species: setosa","Sepal.Length: 5.7<br />Sepal.Width: 3.8<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.8<br />Species: setosa","Sepal.Length: 5.4<br />Sepal.Width: 3.4<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.7<br />Species: setosa","Sepal.Length: 4.6<br />Sepal.Width: 3.6<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.3<br />Species: setosa","Sepal.Length: 4.8<br />Sepal.Width: 3.4<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.0<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.4<br />Species: setosa","Sepal.Length: 5.2<br />Sepal.Width: 3.5<br />Species: setosa","Sepal.Length: 5.2<br />Sepal.Width: 3.4<br />Species: setosa","Sepal.Length: 4.7<br />Sepal.Width: 3.2<br />Species: setosa","Sepal.Length: 4.8<br />Sepal.Width: 3.1<br />Species: setosa","Sepal.Length: 5.4<br />Sepal.Width: 3.4<br />Species: setosa","Sepal.Length: 5.2<br />Sepal.Width: 4.1<br />Species: setosa","Sepal.Length: 5.5<br />Sepal.Width: 4.2<br />Species: setosa","Sepal.Length: 4.9<br />Sepal.Width: 3.1<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.2<br />Species: setosa","Sepal.Length: 5.5<br />Sepal.Width: 3.5<br />Species: setosa","Sepal.Length: 4.9<br />Sepal.Width: 3.6<br />Species: setosa","Sepal.Length: 4.4<br />Sepal.Width: 3.0<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.4<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.5<br />Species: setosa","Sepal.Length: 4.5<br />Sepal.Width: 2.3<br />Species: setosa","Sepal.Length: 4.4<br />Sepal.Width: 3.2<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.5<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.8<br />Species: setosa","Sepal.Length: 4.8<br />Sepal.Width: 3.0<br />Species: setosa","Sepal.Length: 5.1<br />Sepal.Width: 3.8<br />Species: setosa","Sepal.Length: 4.6<br />Sepal.Width: 3.2<br />Species: setosa","Sepal.Length: 5.3<br />Sepal.Width: 3.7<br />Species: setosa","Sepal.Length: 5.0<br />Sepal.Width: 3.3<br />Species: setosa"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"setosa","legendgroup":"setosa","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[7,6.4,6.9,5.5,6.5,5.7,6.3,4.9,6.6,5.2,5,5.9,6,6.1,5.6,6.7,5.6,5.8,6.2,5.6,5.9,6.1,6.3,6.1,6.4,6.6,6.8,6.7,6,5.7,5.5,5.5,5.8,6,5.4,6,6.7,6.3,5.6,5.5,5.5,6.1,5.8,5,5.6,5.7,5.7,6.2,5.1,5.7],"y":[3.2,3.2,3.1,2.3,2.8,2.8,3.3,2.4,2.9,2.7,2,3,2.2,2.9,2.9,3.1,3,2.7,2.2,2.5,3.2,2.8,2.5,2.8,2.9,3,2.8,3,2.9,2.6,2.4,2.4,2.7,2.7,3,3.4,3.1,2.3,3,2.5,2.6,3,2.6,2.3,2.7,3,2.9,2.9,2.5,2.8],"text":["Sepal.Length: 7.0<br />Sepal.Width: 3.2<br />Species: versicolor","Sepal.Length: 6.4<br />Sepal.Width: 3.2<br />Species: versicolor","Sepal.Length: 6.9<br />Sepal.Width: 3.1<br />Species: versicolor","Sepal.Length: 5.5<br />Sepal.Width: 2.3<br />Species: versicolor","Sepal.Length: 6.5<br />Sepal.Width: 2.8<br />Species: versicolor","Sepal.Length: 5.7<br />Sepal.Width: 2.8<br />Species: versicolor","Sepal.Length: 6.3<br />Sepal.Width: 3.3<br />Species: versicolor","Sepal.Length: 4.9<br />Sepal.Width: 2.4<br />Species: versicolor","Sepal.Length: 6.6<br />Sepal.Width: 2.9<br />Species: versicolor","Sepal.Length: 5.2<br />Sepal.Width: 2.7<br />Species: versicolor","Sepal.Length: 5.0<br />Sepal.Width: 2.0<br />Species: versicolor","Sepal.Length: 5.9<br />Sepal.Width: 3.0<br />Species: versicolor","Sepal.Length: 6.0<br />Sepal.Width: 2.2<br />Species: versicolor","Sepal.Length: 6.1<br />Sepal.Width: 2.9<br />Species: versicolor","Sepal.Length: 5.6<br />Sepal.Width: 2.9<br />Species: versicolor","Sepal.Length: 6.7<br />Sepal.Width: 3.1<br />Species: versicolor","Sepal.Length: 5.6<br />Sepal.Width: 3.0<br />Species: versicolor","Sepal.Length: 5.8<br />Sepal.Width: 2.7<br />Species: versicolor","Sepal.Length: 6.2<br />Sepal.Width: 2.2<br />Species: versicolor","Sepal.Length: 5.6<br />Sepal.Width: 2.5<br />Species: versicolor","Sepal.Length: 5.9<br />Sepal.Width: 3.2<br />Species: versicolor","Sepal.Length: 6.1<br />Sepal.Width: 2.8<br />Species: versicolor","Sepal.Length: 6.3<br />Sepal.Width: 2.5<br />Species: versicolor","Sepal.Length: 6.1<br />Sepal.Width: 2.8<br />Species: versicolor","Sepal.Length: 6.4<br />Sepal.Width: 2.9<br />Species: versicolor","Sepal.Length: 6.6<br />Sepal.Width: 3.0<br />Species: versicolor","Sepal.Length: 6.8<br />Sepal.Width: 2.8<br />Species: versicolor","Sepal.Length: 6.7<br />Sepal.Width: 3.0<br />Species: versicolor","Sepal.Length: 6.0<br />Sepal.Width: 2.9<br />Species: versicolor","Sepal.Length: 5.7<br />Sepal.Width: 2.6<br />Species: versicolor","Sepal.Length: 5.5<br />Sepal.Width: 2.4<br />Species: versicolor","Sepal.Length: 5.5<br />Sepal.Width: 2.4<br />Species: versicolor","Sepal.Length: 5.8<br />Sepal.Width: 2.7<br />Species: versicolor","Sepal.Length: 6.0<br />Sepal.Width: 2.7<br />Species: versicolor","Sepal.Length: 5.4<br />Sepal.Width: 3.0<br />Species: versicolor","Sepal.Length: 6.0<br />Sepal.Width: 3.4<br />Species: versicolor","Sepal.Length: 6.7<br />Sepal.Width: 3.1<br />Species: versicolor","Sepal.Length: 6.3<br />Sepal.Width: 2.3<br />Species: versicolor","Sepal.Length: 5.6<br />Sepal.Width: 3.0<br />Species: versicolor","Sepal.Length: 5.5<br />Sepal.Width: 2.5<br />Species: versicolor","Sepal.Length: 5.5<br />Sepal.Width: 2.6<br />Species: versicolor","Sepal.Length: 6.1<br />Sepal.Width: 3.0<br />Species: versicolor","Sepal.Length: 5.8<br />Sepal.Width: 2.6<br />Species: versicolor","Sepal.Length: 5.0<br />Sepal.Width: 2.3<br />Species: versicolor","Sepal.Length: 5.6<br />Sepal.Width: 2.7<br />Species: versicolor","Sepal.Length: 5.7<br />Sepal.Width: 3.0<br />Species: versicolor","Sepal.Length: 5.7<br />Sepal.Width: 2.9<br />Species: versicolor","Sepal.Length: 6.2<br />Sepal.Width: 2.9<br />Species: versicolor","Sepal.Length: 5.1<br />Sepal.Width: 2.5<br />Species: versicolor","Sepal.Length: 5.7<br />Sepal.Width: 2.8<br />Species: versicolor"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,186,56,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,186,56,1)"}},"hoveron":"points","name":"versicolor","legendgroup":"versicolor","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[6.3,5.8,7.1,6.3,6.5,7.6,4.9,7.3,6.7,7.2,6.5,6.4,6.8,5.7,5.8,6.4,6.5,7.7,7.7,6,6.9,5.6,7.7,6.3,6.7,7.2,6.2,6.1,6.4,7.2,7.4,7.9,6.4,6.3,6.1,7.7,6.3,6.4,6,6.9,6.7,6.9,5.8,6.8,6.7,6.7,6.3,6.5,6.2,5.9],"y":[3.3,2.7,3,2.9,3,3,2.5,2.9,2.5,3.6,3.2,2.7,3,2.5,2.8,3.2,3,3.8,2.6,2.2,3.2,2.8,2.8,2.7,3.3,3.2,2.8,3,2.8,3,2.8,3.8,2.8,2.8,2.6,3,3.4,3.1,3,3.1,3.1,3.1,2.7,3.2,3.3,3,2.5,3,3.4,3],"text":["Sepal.Length: 6.3<br />Sepal.Width: 3.3<br />Species: virginica","Sepal.Length: 5.8<br />Sepal.Width: 2.7<br />Species: virginica","Sepal.Length: 7.1<br />Sepal.Width: 3.0<br />Species: virginica","Sepal.Length: 6.3<br />Sepal.Width: 2.9<br />Species: virginica","Sepal.Length: 6.5<br />Sepal.Width: 3.0<br />Species: virginica","Sepal.Length: 7.6<br />Sepal.Width: 3.0<br />Species: virginica","Sepal.Length: 4.9<br />Sepal.Width: 2.5<br />Species: virginica","Sepal.Length: 7.3<br />Sepal.Width: 2.9<br />Species: virginica","Sepal.Length: 6.7<br />Sepal.Width: 2.5<br />Species: virginica","Sepal.Length: 7.2<br />Sepal.Width: 3.6<br />Species: virginica","Sepal.Length: 6.5<br />Sepal.Width: 3.2<br />Species: virginica","Sepal.Length: 6.4<br />Sepal.Width: 2.7<br />Species: virginica","Sepal.Length: 6.8<br />Sepal.Width: 3.0<br />Species: virginica","Sepal.Length: 5.7<br />Sepal.Width: 2.5<br />Species: virginica","Sepal.Length: 5.8<br />Sepal.Width: 2.8<br />Species: virginica","Sepal.Length: 6.4<br />Sepal.Width: 3.2<br />Species: virginica","Sepal.Length: 6.5<br />Sepal.Width: 3.0<br />Species: virginica","Sepal.Length: 7.7<br />Sepal.Width: 3.8<br />Species: virginica","Sepal.Length: 7.7<br />Sepal.Width: 2.6<br />Species: virginica","Sepal.Length: 6.0<br />Sepal.Width: 2.2<br />Species: virginica","Sepal.Length: 6.9<br />Sepal.Width: 3.2<br />Species: virginica","Sepal.Length: 5.6<br />Sepal.Width: 2.8<br />Species: virginica","Sepal.Length: 7.7<br />Sepal.Width: 2.8<br />Species: virginica","Sepal.Length: 6.3<br />Sepal.Width: 2.7<br />Species: virginica","Sepal.Length: 6.7<br />Sepal.Width: 3.3<br />Species: virginica","Sepal.Length: 7.2<br />Sepal.Width: 3.2<br />Species: virginica","Sepal.Length: 6.2<br />Sepal.Width: 2.8<br />Species: virginica","Sepal.Length: 6.1<br />Sepal.Width: 3.0<br />Species: virginica","Sepal.Length: 6.4<br />Sepal.Width: 2.8<br />Species: virginica","Sepal.Length: 7.2<br />Sepal.Width: 3.0<br />Species: virginica","Sepal.Length: 7.4<br />Sepal.Width: 2.8<br />Species: virginica","Sepal.Length: 7.9<br />Sepal.Width: 3.8<br />Species: virginica","Sepal.Length: 6.4<br />Sepal.Width: 2.8<br />Species: virginica","Sepal.Length: 6.3<br />Sepal.Width: 2.8<br />Species: virginica","Sepal.Length: 6.1<br />Sepal.Width: 2.6<br />Species: virginica","Sepal.Length: 7.7<br />Sepal.Width: 3.0<br />Species: virginica","Sepal.Length: 6.3<br />Sepal.Width: 3.4<br />Species: virginica","Sepal.Length: 6.4<br />Sepal.Width: 3.1<br />Species: virginica","Sepal.Length: 6.0<br />Sepal.Width: 3.0<br />Species: virginica","Sepal.Length: 6.9<br />Sepal.Width: 3.1<br />Species: virginica","Sepal.Length: 6.7<br />Sepal.Width: 3.1<br />Species: virginica","Sepal.Length: 6.9<br />Sepal.Width: 3.1<br />Species: virginica","Sepal.Length: 5.8<br />Sepal.Width: 2.7<br />Species: virginica","Sepal.Length: 6.8<br />Sepal.Width: 3.2<br />Species: virginica","Sepal.Length: 6.7<br />Sepal.Width: 3.3<br />Species: virginica","Sepal.Length: 6.7<br />Sepal.Width: 3.0<br />Species: virginica","Sepal.Length: 6.3<br />Sepal.Width: 2.5<br />Species: virginica","Sepal.Length: 6.5<br />Sepal.Width: 3.0<br />Species: virginica","Sepal.Length: 6.2<br />Sepal.Width: 3.4<br />Species: virginica","Sepal.Length: 5.9<br />Sepal.Width: 3.0<br />Species: virginica"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(97,156,255,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(97,156,255,1)"}},"hoveron":"points","name":"virginica","legendgroup":"virginica","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":43.1050228310502},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[4.12,8.08],"tickmode":"array","ticktext":["5","6","7","8"],"tickvals":[5,6,7,8],"categoryorder":"array","categoryarray":["5","6","7","8"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Sepal.Length","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1.88,4.52],"tickmode":"array","ticktext":["2.0","2.5","3.0","3.5","4.0","4.5"],"tickvals":[2,2.5,3,3.5,4,4.5],"categoryorder":"array","categoryarray":["2.0","2.5","3.0","3.5","4.0","4.5"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Sepal.Width","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"Species","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"ecb2a64a8cae6":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"ecb2a64a8cae6","visdat":{"ecb2a64a8cae6":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>See the <a href="https://plotly-book.cpsievert.me/">plotly for R</a> book for more details and to learn how to build plotly plots from scratch in R.</p>
+</section>
+<section id="interactive-apps-with-shiny" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-apps-with-shiny">Interactive apps with <code>shiny</code></h2>
+<p>For more details about <code>shiny</code>, visit the main <code>shiny</code> <a href="https://shiny.rstudio.com/">website</a> or consult the <a href="https://mastering-shiny.org/">Mastering Shiny</a> book.</p>
+<p>The <a href="https://shiny.rstudio.com/"><code>shiny</code></a> package desciption says that it</p>
+<blockquote class="blockquote">
+<p>Makes it incredibly easy to build interactive web applications with R.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"shiny"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As opposed to <code>plotly</code> above, when using <a href="https://shiny.rstudio.com/"><code>shiny</code></a>, one tends to aim for more complete, long-lasting applications, rather than transient visualisations.</p>
+<p>A <a href="https://shiny.rstudio.com/"><code>shiny</code></a> application is composed of a <em>ui</em> (user interface) and a <em>server</em> that exchange information using a programming paradigm called <em>reactive programming</em>: changes performed by the user to the <em>ui</em> trigger a reaction by the <em>server</em> and the output is updated accordingly.</p>
+<ul>
+<li><p>In the <strong>ui</strong>: define the components of the user interface (such as page layout, page title, input options and outputs), i.e what the user will see and interact with.</p></li>
+<li><p>In the <strong>server</strong>: defines the computations in the R backend.</p></li>
+<li><p>The <strong>reactive</strong> programming is implemented through <em>reactive</em> functions, which are functions that are only called when their respective inputs are changed.</p></li>
+<li><p>An application is run with the <code>shiny::runApp()</code> function, that takes the directory containing the <em>ui</em> and <em>server</em> as input.</p></li>
+</ul>
+<p>Let’s build a simple example from scratch, step by step. This app, shown below, uses the <code>faithful</code> data, describing the wainting time between eruptions and the duration of the reuption for the Old Faithful geyser in Yellowstone National Park, Wyoming, USA.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(faithful)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  eruptions waiting
+1     3.600      79
+2     1.800      54
+3     3.333      74
+4     2.283      62
+5     4.533      85
+6     2.883      55</code></pre>
+</div>
+</div>
+<p>It shows the distribution of waiting times along a histogram (produced by the <code>hist</code> function) and provides a slider to adjust the number of bins (the <code>breaks</code> argument to <code>hist</code>).</p>
+<div class="cell">
+<iframe src="https://lgatto.shinyapps.io/shiny-app1/?showcase=0" width="672" height="650px" data-external="1">
+</iframe>
+</div>
+<p>The app can also be opened at <a href="https://lgatto.shinyapps.io/shiny-app1">https://lgatto.shinyapps.io/shiny-app1</a>.</p>
+<section id="creation-of-our-fist-shiny-app" class="level3">
+<h3 class="anchored" data-anchor-id="creation-of-our-fist-shiny-app">Creation of our fist shiny app</h3>
+<ol type="1">
+<li>Create a directory that will contain the app, such as for example <code>"shinyapp"</code>.</li>
+<li>In this directory, create the <em>ui</em> and <em>server</em> files, named <code>ui.R</code> and <code>server.R</code>.</li>
+<li>In the <code>ui.R</code> file, let’s defines a (fluid) page containing
+<ul>
+<li>a title panel with a page title;</li>
+<li>a layout containing a sidebar and a main panel</li>
+</ul></li>
+</ol>
+<div class="cell" data-labe="ui00">
+<div class="cell-output cell-output-stdout">
+<pre class="output-code"><code>library(shiny)
+
+shinyUI(fluidPage(
+    titlePanel("My Shiny App"),
+    sidebarLayout(
+        sidebarPanel(
+        ),
+        mainPanel(
+        )
+    )
+))</code></pre>
+</div>
+</div>
+<ol start="4" type="1">
+<li>In the <code>server.R</code> file, we define the <code>shinyServer</code> function that handles input and ouputs (none at this stage) and the R logic.</li>
+</ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre class="output-code"><code>library(shiny)
+
+shinyServer(function(input, output) {
+})</code></pre>
+</div>
+</div>
+<ol start="5" type="1">
+<li>Let’s now add some items to the <em>ui</em>: a text input widget in the sidebar and a field to hold the text ouput.</li>
+</ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre class="output-code"><code>library(shiny)
+
+shinyUI(fluidPage(
+    titlePanel("My Shiny App"),
+    sidebarLayout(
+        sidebarPanel(
+            textInput("textInput", "Enter text here:")
+        ),
+        mainPanel(
+            textOutput("textOutput")
+        )
+    )
+))</code></pre>
+</div>
+</div>
+<ol start="6" type="1">
+<li>In the <code>server.R</code> file, we add in the <code>shinyServer</code> function some R code defining how to manipulate the user-provided text and render it using a shiny <code>textOuput</code>.</li>
+</ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre class="output-code"><code>library(shiny)
+
+shinyServer(function(input, output) {
+    output$textOutput &lt;- renderText(paste("User-entered text: ",
+                                          input$textInput))
+})</code></pre>
+</div>
+</div>
+<ol start="7" type="1">
+<li>Let’s now add a plot in the main panel in <code>ui.R</code> and some code to draw a histogram in <code>server.R</code>:</li>
+</ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre class="output-code"><code>library(shiny)
+
+shinyUI(fluidPage(
+    titlePanel("My Shiny App"),
+    sidebarLayout(
+        sidebarPanel(
+            textInput("textInput", "Enter text here:")
+        ),
+        mainPanel(
+            textOutput("textOutput"),
+            plotOutput("distPlot")            
+        )
+    )
+))</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre class="output-code"><code>library(shiny)
+
+shinyServer(function(input, output) {
+    output$textOutput &lt;- renderText(paste("User-entered text: ",
+                                          input$textInput))
+    output$distPlot &lt;- renderPlot({
+        x    &lt;- faithful[, 2]
+        hist(x)
+    })
+    
+})</code></pre>
+</div>
+</div>
+<ol start="8" type="1">
+<li>We want to be able to control the number of breaks used to plot the histograms. We first add a <code>sliderInput</code> to the <em>ui</em> for the user to specify the number of bins, and then make use of that new input to parametrise the histogram.</li>
+</ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre class="output-code"><code>library(shiny)
+
+shinyUI(fluidPage(
+    titlePanel("My Shiny App"),
+    sidebarLayout(
+        sidebarPanel(
+            textInput("textInput", "Enter text here:"),
+            sliderInput("bins",
+                        "Number of bins:",
+                        min = 1,
+                        max = 50,
+                        value = 30)            
+        ),
+        mainPanel(
+            textOutput("textOutput"),
+            plotOutput("distPlot")            
+        )
+    )
+))</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre class="output-code"><code>library(shiny)
+
+shinyServer(function(input, output) {
+    output$textOutput &lt;- renderText(paste("User-entered text: ",
+                                          input$textInput))
+    output$distPlot &lt;- renderPlot({
+        x    &lt;- faithful[, 2]
+        bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)    
+        hist(x, breaks = bins)
+    })
+    
+})</code></pre>
+</div>
+</div>
+<ol start="9" type="1">
+<li>The next addition is to add a menu for the user to choose a set of predefined colours (that would be a <code>selectInput</code>) in the <code>ui.R</code> file and use that new input to parametrise the colour of the histogramme in the <code>server.R</code> file.</li>
+</ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre class="output-code"><code>library(shiny)
+
+shinyUI(fluidPage(
+    titlePanel("My Shiny App"),
+    sidebarLayout(
+        sidebarPanel(
+            textInput("textInput", "Enter text here:"),
+            sliderInput("bins",
+                        "Number of bins:",
+                        min = 1,
+                        max = 50,
+                        value = 30),
+            selectInput("col", "Select a colour:",
+                        choices = c("steelblue", "darkgray", "orange"))            
+        ),
+        mainPanel(
+            textOutput("textOutput"),
+            plotOutput("distPlot")
+        )
+    )
+))</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre class="output-code"><code>library(shiny)
+
+shinyServer(function(input, output) {
+    output$textOutput &lt;- renderText(paste("User-entered text: ",
+                                          input$textInput))
+    output$distPlot &lt;- renderPlot({
+        x    &lt;- faithful[, 2]
+        bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)
+        hist(x, breaks = bins, col = input$col)
+    })
+    
+})</code></pre>
+</div>
+</div>
+<ol start="10" type="1">
+<li>The last addition that we want is to visualise the actual data in the main panel. We add a <code>dataTableOutput</code> in <code>ui.R</code> and generate that table in <code>server.R</code> using a <code>renderDataTable</code> rendering function.</li>
+</ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre class="output-code"><code>library(shiny)
+## Define UI for application that draws a histogram
+shinyUI(fluidPage(
+    ## Application title
+    titlePanel("My Shiny App"),
+    ## Sidebar with text, slide bar and menu selection inputs
+    sidebarLayout(
+        sidebarPanel(
+            textInput("textInput", "Enter text here:"),
+            sliderInput("bins",
+                        "Number of bins:",
+                        min = 1,
+                        max = 50,
+                        value = 30),
+            selectInput("col", "Select a colour:",
+                        choices = c("steelblue", "darkgray", "orange"))
+        ),
+        ## Main panel showing user-entered text, a reactive plot and a
+        ## dynamic table
+        mainPanel(
+            textOutput("textOutput"),
+            plotOutput("distPlot"),
+            dataTableOutput("dataTable")
+        )
+    )
+))</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre class="output-code"><code>library(shiny)
+## Define server logic 
+shinyServer(function(input, output) {
+    output$textOutput &lt;- renderText(paste("User-entered text: ",
+                                          input$textInput))
+    ## Expression that generates a histogram. The expression is
+    ## wrapped in a call to renderPlot to indicate that:
+    ##
+    ##  1) It is "reactive" and therefore should be automatically
+    ##     re-executed when inputs change
+    ##  2) Its output type is a plot
+    output$distPlot &lt;- renderPlot({
+        x    &lt;- faithful[, 2]  ## Old Faithful Geyser data
+        bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)
+        ## draw the histogram with the specified number of bins
+        hist(x, breaks = bins, col = input$col, border = 'white')
+    })
+    output$dataTable &lt;- renderDataTable(faithful)
+})</code></pre>
+</div>
+</div>
+</section>
+<section id="single-file-app" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="single-file-app">Single-file app</h3>
+<p>Instead of defining the <em>ui</em> and <em>server</em> in their respective files, they can be combined into list</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(...)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) { ... }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To be run as</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(<span class="at">ui =</span> ui, <span class="at">server =</span> server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sharing-shiny-apps" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="sharing-shiny-apps">Sharing <code>shiny</code> apps</h3>
+<ul>
+<li>Share the code file(s) and <code>runApp</code>.</li>
+<li><code>runUrl</code> will download and launch a Shiny application that is hosted at a downloadable URL.</li>
+<li><code>runGitHub</code> to run an application available on GitHub <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</li>
+<li><a href="http://wwwshinyapps.io">shinyapps</a> hosts Shiny application.</li>
+<li>Shiny server (in-house)</li>
+</ul>
+</section>
+</section>
+<section id="session-information" class="level2">
+<h2 class="anchored" data-anchor-id="session-information">Session information</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.2.2 Patched (2022-11-02 r83238)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Manjaro Linux
+
+Matrix products: default
+BLAS:   /usr/lib/libblas.so.3.11.0
+LAPACK: /usr/lib/liblapack.so.3.11.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] plotly_4.10.1 ggplot2_3.4.0
+
+loaded via a namespace (and not attached):
+ [1] highr_0.10        pillar_1.8.1      compiler_4.2.2    tools_4.2.2      
+ [5] digest_0.6.31     viridisLite_0.4.1 jsonlite_1.8.4    evaluate_0.19    
+ [9] lifecycle_1.0.3   tibble_3.1.8      gtable_0.3.1      pkgconfig_2.0.3  
+[13] rlang_1.0.6       cli_3.5.0         DBI_1.1.3         rstudioapi_0.14  
+[17] crosstalk_1.2.0   yaml_2.3.6        xfun_0.36         fastmap_1.1.0    
+[21] httr_1.4.4        withr_2.5.0       stringr_1.5.0     dplyr_1.0.10     
+[25] knitr_1.41        generics_0.1.3    vctrs_0.5.1       htmlwidgets_1.6.0
+[29] grid_4.2.2        tidyselect_1.2.0  data.table_1.14.6 glue_1.6.2       
+[33] R6_2.5.1          fansi_1.0.3       rmarkdown_2.19    farver_2.1.1     
+[37] tidyr_1.2.1       purrr_1.0.0       magrittr_2.0.3    ellipsis_0.3.2   
+[41] scales_1.2.1      htmltools_0.5.4   assertthat_0.2.1  colorspace_2.0-3 
+[45] labeling_0.4.2    utf8_1.2.2        stringi_1.7.8     lazyeval_0.2.2   
+[49] munsell_0.5.0    </code></pre>
+</div>
+</div>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>You can for instance run this app with <code>runGitHub("interactive-vis-intro", "lgatto", subdir = "/src/shiny-app1")</code><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
