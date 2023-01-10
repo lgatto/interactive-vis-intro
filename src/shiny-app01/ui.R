@@ -1,5 +1,3 @@
-library(shiny)
-
 shinyUI(fluidPage(
     titlePanel("My Shiny App"),
     sidebarLayout(
@@ -11,4 +9,3 @@ shinyUI(fluidPage(
         )
     )
 ))
-

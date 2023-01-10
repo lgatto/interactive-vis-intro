@@ -1,5 +1,3 @@
-library(shiny)
-
 shinyUI(fluidPage(
     titlePanel("My Shiny App"),
     sidebarLayout(
@@ -11,7 +9,7 @@ shinyUI(fluidPage(
                         max = 50,
                         value = 30),
             selectInput("col", "Select a colour:",
-                        choices = c("steelblue", "darkgray", "orange"))            
+                        choices = c("steelblue", "darkgray", "orange"))
         ),
         mainPanel(
             textOutput("textOutput"),
@@ -19,4 +17,3 @@ shinyUI(fluidPage(
         )
     )
 ))
-

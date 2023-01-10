@@ -1,5 +1,3 @@
-library(shiny)
-
 shinyUI(fluidPage(
     titlePanel("My Shiny App"),
     sidebarLayout(
@@ -8,8 +6,7 @@ shinyUI(fluidPage(
         ),
         mainPanel(
             textOutput("textOutput"),
-            plotOutput("distPlot")            
+            plotOutput("distPlot")
         )
     )
 ))
-

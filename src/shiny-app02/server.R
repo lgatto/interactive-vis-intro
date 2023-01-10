@@ -1,5 +1,3 @@
-library(shiny)
-
 shinyServer(function(input, output) {
     output$textOutput <- renderText(paste("User-entered text: ",
                                           input$textInput))
@@ -7,5 +5,5 @@ shinyServer(function(input, output) {
         x    <- faithful[, 2]
         hist(x)
     })
-    
+
 })

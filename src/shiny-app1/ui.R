@@ -1,5 +1,3 @@
-library(shiny)
-
 ## Define UI for application that draws a histogram
 shinyUI(fluidPage(
 
@@ -18,7 +16,7 @@ shinyUI(fluidPage(
             selectInput("col", "Select a colour:",
                         choices = c("steelblue", "darkgray", "orange"))
         ),
-            
+
         ## Main panel showing user-entered text, a reactive plot and a
         ## dynamic table
         mainPanel(

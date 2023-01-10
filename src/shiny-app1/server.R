@@ -1,11 +1,9 @@
-library(shiny)
-
-## Define server logic 
+## Define server logic
 shinyServer(function(input, output) {
 
     output$textOutput <- renderText(paste("User-entered text: ",
                                           input$textInput))
-    
+
     ## Expression that generates a histogram. The expression is
     ## wrapped in a call to renderPlot to indicate that:
     ##
@@ -19,7 +17,7 @@ shinyServer(function(input, output) {
         ## draw the histogram with the specified number of bins
         hist(x, breaks = bins, col = input$col, border = 'white')
     })
-    
+
     output$dataTable <- renderDataTable(faithful)
 
 })
