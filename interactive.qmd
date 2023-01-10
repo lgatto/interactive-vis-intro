@@ -131,31 +131,22 @@ The app can also be opened at
     -   a layout containing a sidebar and a main panel
 
 ```{r}
-#| labe: ui00
-#| comment: ""
-#| echo: false
-#| class-output: output-code
-writeLines(readLines('src/shiny-app00/ui.R'))
+#| eval: false
+#| file: src/shiny-app00/ui.R
 ```
 
 4.  In the `server.R` file, we define the `shinyServer` function that handles input and ouputs (none at this stage) and the R logic.
 
 ```{r}
-#| label: server00
-#| comment: ""
-#| echo: false
-#| class-output: output-code
-writeLines(readLines('src/shiny-app00/server.R'))
+#| eval: false
+#| file: src/shiny-app00/server.R
 ```
 
 5.  Let's now add some items to the *ui*: a text input widget in the sidebar and a field to hold the text ouput.
 
 ```{r}
-#| label: ui01
-#| comment: ""
-#| echo: false
-#| class-output: output-code
-writeLines(readLines('src/shiny-app01/ui.R'))
+#| eval: false
+#| file: src/shiny-app01/ui.R
 ```
 
 6.  In the `server.R` file, we add in the `shinyServer` function some
@@ -163,29 +154,20 @@ writeLines(readLines('src/shiny-app01/ui.R'))
     render it using a shiny `textOuput`.
 
 ```{r}
-#| label: server01
-#| comment: ""
-#| echo: false
-#| class-output: output-code
-writeLines(readLines('src/shiny-app01/server.R'))
+#| eval: false
+#| file: src/shiny-app01/server.R
 ```
 
 7.  Let's now add a plot in the main panel in `ui.R` and some code to draw a histogram in `server.R`:
 
 ```{r}
-#| label: ui02
-#| comment: ""
-#| echo: false
-#| class-output: output-code
-writeLines(readLines('src/shiny-app02/ui.R'))
+#| eval: false
+#| file: src/shiny-app02/ui.R
 ```
 
 ```{r}
-#| label: server02
-#| comment: ""
-#| echo: false
-#| class-output: output-code
-writeLines(readLines('src/shiny-app02/server.R'))
+#| eval: false
+#| file: src/shiny-app02/server.R
 ```
 
 8.  We want to be able to control the number of breaks used to plot
@@ -194,19 +176,13 @@ writeLines(readLines('src/shiny-app02/server.R'))
     input to parametrise the histogram.
 
 ```{r}
-#| label: ui03
-#| comment: ""
-#| echo: false
-#| class-output: output-code
-writeLines(readLines('src/shiny-app03/ui.R'))
+#| eval: false
+#| file: src/shiny-app03/ui.R
 ```
 
 ```{r server03, comment = "", echo=FALSE}
-#| label: server03
-#| comment: ""
-#| echo: false
-#| class-output: output-code
-writeLines(readLines('src/shiny-app03/server.R'))
+#| eval: false
+#| file: src/shiny-app03/server.R
 ```
 
 9.  The next addition is to add a menu for the user to choose a set of
@@ -215,19 +191,13 @@ writeLines(readLines('src/shiny-app03/server.R'))
     histogramme in the `server.R` file.
 
 ```{r}
-#| label: ui04
-#| comment: ""
-#| echo: false
-#| class-output: output-code
-writeLines(readLines('src/shiny-app04/ui.R'))
+#| eval: false
+#| file: src/shiny-app04/ui.R
 ```
 
 ```{r}
-#| label: server04
-#| comment: ""
-#| echo: false
-#| class-output: output-code
-writeLines(readLines('src/shiny-app04/server.R'))
+#| eval: false
+#| file: src/shiny-app04/server.R
 ```
 
 10. The last addition that we want is to visualise the actual data in
@@ -236,21 +206,13 @@ writeLines(readLines('src/shiny-app04/server.R'))
     function.
 
 ```{r}
-#| label: ui1
-#| comment: ""
-#| echo: false
-#| class-output: output-code
-lns <- readLines('src/shiny-app1/ui.R')
-writeLines(lns[-grep("^\\s*$", lns)])
+#| eval: false
+#| file: src/shiny-app1/ui.R
 ```
 
 ```{r}
-#| label: server1
-#| comment: ""
-#| echo: false
-#| class-output: output-code
-lns <- readLines('src/shiny-app1/server.R')
-writeLines(lns[-grep("^\\s*$", lns)])
+#| eval: false
+#| file: src/shiny-app1/server.R
 ```
 
 
