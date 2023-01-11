@@ -260,6 +260,9 @@ Shiny](https://mastering-shiny.org/) book.
 
 ## Session information
 
+The source of this document is available at
+[https://github.com/lgatto/interactive-vis-intro](https://github.com/lgatto/interactive-vis-intro). This document was generated on `r date()`.
+
 ```{r}
 sessionInfo()
 ```
