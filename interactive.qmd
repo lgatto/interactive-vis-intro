@@ -219,7 +219,6 @@ The app can also be opened at
 #| file: src/shiny-app1/server.R
 ```
 
-
 ### Single-file app {.unnumbered}
 
 Instead of defining the *ui* and *server* in their respective files,
@@ -240,6 +239,11 @@ To be run as
 #| code-fold: false
 shinyApp(ui = ui, server = server)
 ```
+
+### With RStudio {.unnumbered}
+
+With RStudio, one can create an RStudion *shiny* project to automate
+the creationg of a directory with a single-file shiny application.
 
 ### Sharing `shiny` apps {.unnumbered}
 
